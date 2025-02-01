@@ -13,14 +13,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:5173', // or whatever port your React app is running on
-    methods: ['GET', 'POST'],
-    credentials: true
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"]
 }));
+
 
 app.use(express.json());
 
@@ -126,6 +127,7 @@ app.post("/addFriend", (req, res) => {
     });
 });
 
+const messagePath = path.join(__dirname, "data", "messages.json");
 // server.js - Add this endpoint
 app.get('/getMessages', (req, res) => {
     const chatId = req.query.chatId;
@@ -140,7 +142,6 @@ app.get('/getMessages', (req, res) => {
 
 
 
-const messagePath = path.join(__dirname, "data", "messages.json");
 
 // Updated add message endpoint
 app.post("/addMessage", (req, res) => {
